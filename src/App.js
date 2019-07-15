@@ -1,26 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from 'react';
+
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+const url = `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey={API_KEY}`;
+
+function useDataFetcher() {
+  const [items, setItems] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
+
+  React.useEffect(() => {
+    setIsLoading(true);
+
+    fetch(url)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error('Error fetching the news!');
+        }
+      })
+      .then(items => {
+        setItems(items);
+        setIsLoading(true);
+      })
+      .catch(error => {
+        setError(error);
+      })
+  }, [])
+
+  return { items, isLoading, error };
+}
 
 function App() {
+  const { items, isLoading, error } = useDataFetcher();
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error.message}</p>
+  }
+
+  if (isLoading) {
+    return <p>Loading posts...</p>
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      {items.map(item => {
+        <>
+          <h1>{item.author}</h1>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          <a href={item.url}>Link to article</a>
+        </>
+      })}
+
+    </Fragment>
   );
 }
+
+
 
 export default App;
