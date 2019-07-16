@@ -1,10 +1,10 @@
 import React from 'react';
 
-const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-const url = `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=${API_KEY}`;
+const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
+const url = 'https://newsapi.org/v2/top-headlines?sources=techcrunch';
 
 function useDataFetcher() {
-  const [items, setItems] = React.useState([]);
+  const [articles, setArticles] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
 
@@ -12,7 +12,11 @@ function useDataFetcher() {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetch(url)
+    fetch(url, {
+      headers: {
+        'X-Api-Key': API_KEY,
+      },
+    })
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -21,8 +25,8 @@ function useDataFetcher() {
         }
       })
       .then(res => {
-        const items = res.articles;
-        setItems(items);
+        const articles = res.articles;
+        setArticles(articles);
         setIsLoading(true);
       })
       .catch(error => {
@@ -30,11 +34,11 @@ function useDataFetcher() {
       })
   }, [])
 
-  return { items, isLoading, error };
+  return { articles, isLoading, error };
 }
 
 function App() {
-  const { items, isLoading, error } = useDataFetcher();
+  const { articles, isLoading, error } = useDataFetcher();
 
   if (error) {
     return <p style={{ color: 'red' }}>{error.message}</p>;
@@ -46,12 +50,12 @@ function App() {
 
   return (
     <div>
-      {items.map(item => (
+      {articles.map(article => (
         <>
-          <h1>{item.author}</h1>
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-          <a href={item.url}>{item.source.name}</a>
+          <h1>{article.author}</h1>
+          <h3>{article.title}</h3>
+          <p>{article.description}</p>
+          <a href={article.url}>{article.source.name}</a>
         </>
       )
 
