@@ -14,7 +14,7 @@ function useDataFetcher() {
 
     fetch(url, {
       headers: {
-        'X-Api-Key': API_KEY,
+        'x-api-key': API_KEY,
       },
     })
       .then(res => {
@@ -27,7 +27,7 @@ function useDataFetcher() {
       .then(res => {
         const articles = res.articles;
         setArticles(articles);
-        setIsLoading(true);
+        setIsLoading(false);
       })
       .catch(error => {
         setError(error);
