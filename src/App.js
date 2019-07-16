@@ -1,7 +1,16 @@
 import React from 'react';
+import styled from 'styled-components';
 
 const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
 const url = 'https://newsapi.org/v2/top-headlines?sources=techcrunch';
+
+const Card = styled.div`
+  margin: 10vh auto;
+  padding: 5vh;
+  width: 50%;
+  border: 2px solid black;
+  text-align: center;
+`;
 
 function useDataFetcher() {
   const [articles, setArticles] = React.useState([]);
@@ -50,13 +59,13 @@ function App() {
 
   return (
     <div>
-      {articles.map(article => (
-        <>
+      {articles.map((article, index) => (
+        <Card key={index}>
           <h1>{article.author}</h1>
           <h3>{article.title}</h3>
           <p>{article.description}</p>
-          <a href={article.url}>{article.source.name}</a>
-        </>
+          <a target="_blank" rel="noopener noreferrer" href={article.url}>{article.source.name}</a>
+        </Card>
       )
 
       )}
