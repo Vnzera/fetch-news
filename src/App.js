@@ -4,6 +4,18 @@ import styled from 'styled-components';
 const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
 const url = 'https://newsapi.org/v2/top-headlines?sources=techcrunch';
 
+const StyledMessage = styled.h2`
+color:  #3e4f85;
+text-align: center;
+box-shadow: 2px 2px 6px rgb(0, 0, 0);
+border: solid 0.01px #3e4f85;
+border-radius: 5px;
+margin: 35vh auto;
+max-width: 10rem;
+max-height: 10rem;
+padding: 1rem;
+`;
+
 const Card = styled.div`
   margin: 10vh auto;
   padding: 5vh;
@@ -62,9 +74,9 @@ function App() {
   }
 
   if (isLoading) {
-    return <p style={{ textAlign: 'center' }}>Loading articles...</p>;
+    return <StyledMessage>Loading...</StyledMessage>;
   }
-  // Article source hardcoded as Tech Crunch but {article.source.name} works also
+
   return (
     <div>
       {articles.map((article, index) => (
