@@ -70,7 +70,8 @@ function App() {
   const { articles, isLoading, error } = useDataFetcher();
 
   if (error) {
-    return <p style={{ color: 'red' }}>{error.message}</p>;
+    return <StyledMessage>{error.message}</StyledMessage>;
+    /* return <p style={{ color: 'red' }}>{error.message}</p>; */
   }
 
   if (isLoading) {
